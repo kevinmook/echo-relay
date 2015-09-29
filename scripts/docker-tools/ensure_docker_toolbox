@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+if [[ "$(uname)" == "Linux" ]]; then
+  if [[ -z "$(which docker)" ]]; then
+    echo "docker doesn't appear to be installed. Please install it: https://docs.docker.com/installation/ubuntulinux/"
+    exit 1
+  fi
+else
+  docker_toolbox_path=`which docker-machine` || true
+  if [ -z "$docker_toolbox_path" ]; then
+    echo "Please install the docker toolbox: https://www.docker.com/toolbox"
+    exit 1
+  fi
+
+  if [ ! -z "$(VBoxManage --version | grep 5.0.2)" ]; then
+    echo "It looks like you're running VirtualBox 5.0.2."
+    echo "This version doesn't work with the docker toolkit (see https://github.com/docker/machine/issues/1716)"
+    echo "Please install version >= 5.0.3, which is currently in testing and can be found here: https://www.virtualbox.org/wiki/Testbuilds"
+    exit 1
+  fi
+fi

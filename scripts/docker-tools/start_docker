@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+if [[ "$(uname)" == "Linux" ]]; then
+  # we don't need to start docker on linux
+  return 0
+fi
+
+DOCKER_MACHINE_NAME=${DOCKER_MACHINE_NAME:-dev}
+
+machine_info=`docker-machine ls | grep -E '^'"$DOCKER_MACHINE_NAME"'\s+'` || true
+if [ -z "$machine_info" ]; then
+  echo "creating the virtualbox machine..."
+  docker-machine create $DOCKER_MACHINE_NAME --virtualbox-disk-size=64000 --driver virtualbox
+
+  # use google's dns server as the default one doesn't always work
+  docker-machine ssh $DOCKER_MACHINE_NAME 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+else
+  # the virtualbox machine exists. Let's see if we need to turn it on
+  if [[ "$machine_info" != *"Running"* ]]; then
+    echo "starting the virtualbox machine..."
+    docker-machine start $DOCKER_MACHINE_NAME
+  fi
+fi
+
+eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
+
+return 0

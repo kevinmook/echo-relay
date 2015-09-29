@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+container_name=$1
+
+if [ -z "$container_name" ]; then
+  echo "Usage: $progname <container_name>" 2>&1
+  exit 1
+fi
+
+. "$DIR/start_docker"
+
+container_id=$(docker ps | grep -E '\s+'"${container_name}"'\s+' | awk -F ' ' '{print $1}')
+if [ -z "$container_id" ]; then
+  echo "Unable to find a running ${container_name} container" 2>&1
+  exit 1
+fi
+
+echo "$container_id"
