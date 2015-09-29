@@ -1,0 +1,53 @@
+#!/bin/bash -e
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+PORT=7200
+CONTAINER_NAME=relay
+
+run() {
+  prepare_args "$@"
+  build_container
+  run_container
+}
+
+usage() {
+  cat <<END
+Usage: $progname OPTIONS
+  -h            Display this help text
+  -p            Listen port. Defaults to $PORT
+
+${*:-}
+END
+  exit 1
+}
+
+prepare_args() {
+  while getopts "p:" OPTION ; do
+    case $OPTION in
+      p)
+        PORT=$OPTARG
+        ;;
+      *)
+        usage
+        ;;
+    esac
+  done
+}
+
+build_container() {
+  $DIR/docker-tools/build -c "$CONTAINER_NAME" -p "$DIR/.."
+}
+
+run_container() {
+  running_output="$(docker ps | grep -E '\s+'$CONTAINER_NAME'\s*')" || true
+  if [[ -z "$running_output" ]]; then
+    container_id=`docker run -d-p $PORT:3000/tcp -p $PORT:3000/udp $CONTAINER_NAME`
+    echo "App is starting in the container $container_id"
+  else
+    container_id=`echo "$running_output" | perl -e 'printf +(split(/\s+/, <>))[0]'`
+    echo "note: App container is already running"
+  fi
+}
+
+run "$@"

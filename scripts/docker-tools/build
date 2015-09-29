@@ -62,7 +62,7 @@ else
   fi
 
   if [[ ! -z "$md5_tool" ]]; then
-    current_build_md5=$(find . \( -type f \( -name Dockerfile -o -path "./configs/*" -o -path "./container_scripts/*" -o -path "./generated/*" \) \) -exec $md5_tool "{}" \; | $md5_tool | cut -d " " -f 1)
+    current_build_md5=$(find . \( -type f \( -name Dockerfile -o -path "./configs/*" -o -path "./code/*" -o -path "./container_scripts/*" -o -path "./generated/*" \) \) -exec $md5_tool "{}" \; | $md5_tool | cut -d " " -f 1)
     mkdir -p "$docker_root/tmp"
     build_md5_file=$docker_root/tmp/build_md5
     if [[ ! -f "$build_md5_file" || "$(cat $build_md5_file)" != "$current_build_md5" ]]; then
