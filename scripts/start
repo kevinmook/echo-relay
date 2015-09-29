@@ -42,7 +42,7 @@ build_container() {
 run_container() {
   running_output="$(docker ps | grep -E '\s+'$CONTAINER_NAME'\s*')" || true
   if [[ -z "$running_output" ]]; then
-    container_id=`docker run -d-p $PORT:3000/tcp -p $PORT:3000/udp $CONTAINER_NAME`
+    container_id=`docker run -d -p $PORT:3000/tcp -p $PORT:3000/udp $CONTAINER_NAME`
     echo "App is starting in the container $container_id"
   else
     container_id=`echo "$running_output" | perl -e 'printf +(split(/\s+/, <>))[0]'`

@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+export DOCKER_MACHINE_NAME=${DOCKER_MACHINE_NAME:-dev}
+
+CONTAINER_NAME=${CONTAINER_NAME:-relay}
+
+$DIR/docker-tools/bash $CONTAINER_NAME

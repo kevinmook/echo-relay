@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+cd /home/app/app
+/sbin/setuser app npm install
+/sbin/setuser app node app.js
