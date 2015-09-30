@@ -4,9 +4,11 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 PORT=7200
 CONTAINER_NAME=relay
+export DOCKER_MACHINE_NAME=${DOCKER_MACHINE_NAME:-dev}
 
 run() {
   prepare_args "$@"
+  prepare_environment
   build_container
   run_container
 }
@@ -33,6 +35,10 @@ prepare_args() {
         ;;
     esac
   done
+}
+
+prepare_environment() {
+  eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
 }
 
 build_container() {

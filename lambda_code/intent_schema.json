@@ -1,0 +1,12 @@
+{
+  "intents": [
+    {
+      "intent": "pause",
+      "slots": []
+    },
+    {
+      "intent": "resume",
+      "slots": []
+    }
+  ]
+}

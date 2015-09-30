@@ -9,6 +9,7 @@
   "author": "Kevin Mook <kevin@kevinmook.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "request": "2.64.0"
   }
 }
