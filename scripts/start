@@ -38,7 +38,9 @@ prepare_args() {
 }
 
 prepare_environment() {
-  eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
+  if [[ ! -z "$(which docker-machine)" ]]; then
+    eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
+  fi
 }
 
 build_container() {
