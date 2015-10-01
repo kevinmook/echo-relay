@@ -1,23 +1,19 @@
 {
   "intents": [
     {
-      "intent": "pause",
+      "intent": "PlayIntent",
       "slots": []
     },
     {
-      "intent": "resume",
-      "slots": []
-    },
-    {
-      "intent": "play",
-      "slots": []
-    },
-    {
-      "intent": "type",
+      "intent": "SkipIntent",
       "slots": [
         {
-          "name": "text",
-          "type": "LITERAL"
+          "name": "SkipDirection",
+          "type": "DIRECTION_LIST"
+        },
+        {
+          "name": "SkipAmount",
+          "type": "AMAZON.NUMBER"
         }
       ]
     }

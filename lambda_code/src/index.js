@@ -6,13 +6,15 @@
 
 var request = require('request');
 
+var SERVER_LOCATION = "http://home.kevinmook.com:7200";
+
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
 exports.handler = function (event, context) {
   try {
     console.log("event.session.application.applicationId=" + event.session.application.applicationId);
 
-    if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.bacef1fa-7bb6-47b3-9358-d94905956121") {
+    if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.998f8ea6-f1d8-4fe1-ae1e-8b4d878e03d7") {
        context.fail("Invalid Application ID");
      }
 
@@ -45,13 +47,37 @@ function onIntent(intentRequest, session, callback) {
   var intentName = intentRequest.intent.name;
 
   // Dispatch to your skill's intent handlers
-  if (intentName === "play" || intentName === "pause" || intentName === "resume") {
-    sendRokuCommand("play", null, intent, session, callback);
-  } else if (intentName === "type") {
-    sendRokuCommand("type", intent.slots.text, intent, session, callback);
+  if (intentName === "PlayIntent") {
+    handlePlayIntent(intent, session, callback);
+  } else if (intentName === "TypeIntent") {
+    handleTypeIntent(intent, session, callback);
+  } else if (intentName === "SkipIntent") {
+    handleSkipIntent(intent, session, callback);
   } else {
     throw "Invalid intent";
   }
+}
+
+function handlePlayIntent(intent, session, callback) {
+  sendRokuCommand("play", null, intent, session, callback);
+}
+
+function handleTypeIntent(intent, session, callback) {
+  sendRokuCommand("type", intent.slots.TypeText, intent, session, callback);
+}
+
+function handleSkipIntent(intent, session, callback) {
+  var direction = intent.slots.SkipDirection;
+  var command;
+  if(direction == "ahead" || direction == "forward") {
+    command = "skip_forward";
+  } else if(direction == "back" || direction == "backward") {
+    command = "skip_back";
+  } else {
+    context.succeed();
+    return;
+  }
+  sendRokuCommand(command, parseInt(intent.slots.SkipAmount), intent, session, callback);
 }
 
 // --------------- Functions that control the skill's behavior -----------------------
@@ -64,7 +90,7 @@ function sendRokuCommand(commandName, arg, intent, session, callback) {
   var repromptText = null;
   var shouldEndSession = true;
 
-  request("http://home.kevinmook.com:7200?command=" + commandName, function (error, response, body) {
+  request(SERVER_LOCATION + "?command=" + commandName, function (error, response, body) {
     callback(sessionAttributes, buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
   });
 }

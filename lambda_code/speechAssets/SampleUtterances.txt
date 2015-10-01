@@ -1,7 +1,7 @@
-Pause pause
+PlayIntent play
+PlayIntent pause
+PlayIntent resume
 
-Resume resume
-
-Play play
-
-Type type {text}
+SkipIntent skip {SkipDirection}
+SkipIntent skip {SkipDirection} {SkipAmount}
+SkipIntent skip {SkipDirection} {SkipAmount} seconds
