@@ -2,4 +2,4 @@
 
 cd /home/app/app
 /sbin/setuser app npm install
-/sbin/setuser app node app.js
+/sbin/setuser app node app.js >logs/stdout.log 2>logs/stderr.log
