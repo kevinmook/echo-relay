@@ -57,6 +57,8 @@ function onIntent(intentRequest, session, callback) {
     handleTypeIntent(intent, session, callback);
   } else if (intentName === "SkipIntent") {
     handleSkipIntent(intent, session, callback);
+  } else if (intentName === "PressIntent") {
+    handlePressIntent(intent, session, callback);
   } else {
     throw "Invalid intent";
   }
@@ -82,6 +84,11 @@ function handleSkipIntent(intent, session, callback) {
     return;
   }
   sendRokuCommand(command, parseInt(intent.slots.SkipAmount.value || 1), intent, session, callback);
+}
+
+function handlePressIntent(intent, session, callback) {
+  var button = intent.slots.Button.value;
+  sendRokuCommand(button, null, intent, session, callback);
 }
 
 // --------------- Functions that control the skill's behavior -----------------------

@@ -33,13 +33,13 @@ function sendCommand(command, arg) {
     sendKeypress("Search");
   } else if(command == "enter") {
     sendKeypress("Enter");
-  } else if(command == "up") {
-    sendKeypress("Up");
   } else if(command == "type") {
-    command_list = underscore.map(arg, function(character) {
-      return "Lit_"+character;
-    });
-    sendArray(command_list);
+    if(arg) {
+      command_list = underscore.map(arg, function(character) {
+        return "Lit_"+character;
+      });
+      sendArray(command_list);
+    }
   } else if (command == "skip_forward" || command == "skip_back") {
     skip(command, parseInt(arg));
   }

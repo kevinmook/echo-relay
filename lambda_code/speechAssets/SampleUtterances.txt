@@ -8,3 +8,5 @@ SkipIntent skip {SkipDirection} {SkipAmount}
 SkipIntent go {SkipDirection} {SkipAmount}
 SkipIntent skip {SkipDirection} {SkipAmount} seconds
 SkipIntent go {SkipDirection} {SkipAmount} seconds
+
+PressIntent press {Button}

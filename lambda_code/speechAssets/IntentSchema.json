@@ -16,6 +16,15 @@
           "type": "AMAZON.NUMBER"
         }
       ]
+    },
+    {
+      "intent": "PressIntent",
+      "slots": [
+        {
+          "name": "Button",
+          "type": "BUTTON_LIST"
+        }
+      ]
     }
   ]
 }
