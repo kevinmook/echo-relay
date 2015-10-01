@@ -49,7 +49,6 @@ function skip(command, amount) {
   if(amount < 1) {
     amount = 1;
   }
-  amount = Math.ceil(amount / 10);
 
   command_list = [];
   underscore.times(amount, function(count) {
