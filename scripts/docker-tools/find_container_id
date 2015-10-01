@@ -11,7 +11,7 @@ fi
 
 . "$DIR/start_docker"
 
-container_id=$(docker ps | grep -E '\s+'"${container_name}"'\s+' | awk -F ' ' '{print $1}')
+container_id=$(docker ps | grep -E '\s+'"${container_name}" | awk -F ' ' '{print $1}')
 if [ -z "$container_id" ]; then
   echo "Unable to find a running ${container_name} container" 2>&1
   exit 1
