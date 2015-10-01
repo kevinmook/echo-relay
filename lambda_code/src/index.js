@@ -81,7 +81,7 @@ function handleSkipIntent(intent, session, callback) {
     callback({}, buildSpeechletResponse("Error", "Error. Unknown direction, "+direction, null, true));
     return;
   }
-  sendRokuCommand(command, parseInt(intent.slots.SkipAmount.value), intent, session, callback);
+  sendRokuCommand(command, parseInt(intent.slots.SkipAmount.value || 1), intent, session, callback);
 }
 
 // --------------- Functions that control the skill's behavior -----------------------
