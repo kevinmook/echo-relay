@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.13.3",
-    "request": "2.64.0"
+    "request": "2.64.0",
+    "underscore": "1.8.3"
   }
 }

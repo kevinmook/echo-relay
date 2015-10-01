@@ -4,6 +4,8 @@
  * https://developer.amazon.com/appsandservices/solutions/alexa/alexa-skills-kit/getting-started-guide
  */
 
+var request = require('request');
+
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
 exports.handler = function (event, context) {
@@ -43,7 +45,7 @@ function onIntent(intentRequest, session, callback) {
     intentName = intentRequest.intent.name;
 
   // Dispatch to your skill's intent handlers
-  if (intentName === "pause" || intentName === "resume") {
+  if (intentName === "play" || intentName === "pause" || intentName === "resume") {
     sendRokuCommand(intentName, intent, session, callback);
   } else {
     throw "Invalid intent";
@@ -60,8 +62,9 @@ function sendRokuCommand(commandName, intent, session, callback) {
   var repromptText = null;
   var shouldEndSession = true;
 
-  callback(sessionAttributes,
-       buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+  request("http://home.kevinmook.com:7200?command=" + commandName, function (error, response, body) {
+    callback(sessionAttributes, buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+  });
 }
 
 // --------------- Helpers that build all of the responses -----------------------

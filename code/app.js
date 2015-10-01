@@ -1,18 +1,79 @@
 var request = require('request');
 var express = require('express');
+var underscore = require('underscore');
+
 var app = express();
 
-function sendCommand(command) {
-  request.post("http://192.168.0.101:8060/keypress/Play")
+function sendCommand(command, arg) {
+  if(command == "play" || command == "pause" || command == "resume") {
+    sendKeypress("Play");
+  } else if(command == "reverse") {
+    sendKeypress("Rev");
+  } else if(command == "forward") {
+    sendKeypress("Fwd");
+  } else if(command == "select") {
+    sendKeypress("Select");
+  } else if(command == "left") {
+    sendKeypress("Left");
+  } else if(command == "right") {
+    sendKeypress("Right");
+  } else if(command == "down") {
+    sendKeypress("Down");
+  } else if(command == "up") {
+    sendKeypress("Up");
+  } else if(command == "back") {
+    sendKeypress("Back");
+  } else if(command == "instant_replay") {
+    sendKeypress("InstantReplay");
+  } else if(command == "info") {
+    sendKeypress("Info");
+  } else if(command == "backspace") {
+    sendKeypress("Backspace");
+  } else if(command == "search") {
+    sendKeypress("Search");
+  } else if(command == "enter") {
+    sendKeypress("Enter");
+  } else if(command == "up") {
+    sendKeypress("Up");
+  } else if(command == "type") {
+    command_list = underscore.map(arg, function(character) {
+      return "Lit_"+character;
+    });
+    sendArray(command_list);
+  } else if (command == "skip_ahead") {
+
+  } else if (command == "skip_back") {
+
+  }
+}
+
+function sendArray(array) {
+  var fun = function(index) {
+    var command = array[index];
+    sendKeypress(command, function() {
+      if(index < array.length - 1) {
+        fun(index + 1);
+      }
+    });
+  };
+
+  fun(0);
+}
+
+function sendKeypress(key, callback) {
+  request.post("http://192.168.0.101:8060/keypress/"+key, function (error, response, body) {
+    if(callback) {
+      callback();
+    }
+  });
 }
 
 app.get('/', function (req, res) {
-  var response = "No params";
+  var command = "";
   if(command = req.query.command) {
-    response = command;
-    sendCommand(command);
+    sendCommand(command, req.query.arg);
   }
-  res.send('Hello World! ' + response);
+  res.send('Hello World!');
 });
 
 var server = app.listen(3000, function () {
