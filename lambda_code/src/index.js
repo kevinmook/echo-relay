@@ -7,6 +7,7 @@
 var request = require('request');
 
 var SERVER_LOCATION = "http://home.kevinmook.com:7200";
+var APPLICATION_ID = "amzn1.echo-sdk-ams.app.bacef1fa-7bb6-47b3-9358-d94905956121";
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
@@ -14,7 +15,7 @@ exports.handler = function (event, context) {
   try {
     console.log("event.session.application.applicationId=" + event.session.application.applicationId);
 
-    if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.998f8ea6-f1d8-4fe1-ae1e-8b4d878e03d7") {
+    if (event.session.application.applicationId !== APPLICATION_ID) {
        context.fail("Invalid Application ID");
      }
 
