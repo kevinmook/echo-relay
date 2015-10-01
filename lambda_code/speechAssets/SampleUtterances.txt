@@ -3,5 +3,8 @@ PlayIntent pause
 PlayIntent resume
 
 SkipIntent skip {SkipDirection}
+SkipIntent go {SkipDirection}
 SkipIntent skip {SkipDirection} {SkipAmount}
+SkipIntent go {SkipDirection} {SkipAmount}
 SkipIntent skip {SkipDirection} {SkipAmount} seconds
+SkipIntent go {SkipDirection} {SkipAmount} seconds

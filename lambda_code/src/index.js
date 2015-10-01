@@ -73,12 +73,12 @@ function handleTypeIntent(intent, session, callback) {
 function handleSkipIntent(intent, session, callback) {
   var direction = intent.slots.SkipDirection.value;
   var command;
-  if(direction == "ahead" || direction == "forward") {
+  if(direction == "ahead" || direction == "forward" || direction == "forwards") {
     command = "skip_forward";
-  } else if(direction == "back" || direction == "backward") {
+  } else if(direction == "back" || direction == "backward" || direction == "backwards") {
     command = "skip_back";
   } else {
-    callback({}, buildSpeechletResponse("Error", "Error. Unknown direction, "+direction, null, true));
+    callback({}, buildSpeechletResponse("Error: Unknown direction, "+direction));
     return;
   }
   sendRokuCommand(command, parseInt(intent.slots.SkipAmount.value || 1), intent, session, callback);
@@ -89,41 +89,29 @@ function handleSkipIntent(intent, session, callback) {
 function sendRokuCommand(commandName, arg, intent, session, callback) {
   var sessionAttributes = {};
 
-  var cardTitle = commandName;
-  var speechOutput = null;
-  var repromptText = null;
-  var shouldEndSession = true;
+  var cardContent = commandName;
 
   var argParam = "";
   if(arg) {
     argParam = "&arg="+arg;
+    cardContent = cardContent + " " + arg;
   }
 
   request(SERVER_LOCATION + "?command=" + commandName + argParam, function (error, response, body) {
-    callback(sessionAttributes, buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+    callback(sessionAttributes, buildSpeechletResponse(cardContent));
   });
 }
 
 // --------------- Helpers that build all of the responses -----------------------
 
-function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
+function buildSpeechletResponse(cardContent) {
   return {
-    outputSpeech: {
-      type: "PlainText",
-      text: output
-    },
     card: {
       type: "Simple",
-      title: "SessionSpeechlet - " + title,
-      content: "SessionSpeechlet - " + output
+      title: "Roku",
+      content: cardContent
     },
-    reprompt: {
-      outputSpeech: {
-        type: "PlainText",
-        text: repromptText
-      }
-    },
-    shouldEndSession: shouldEndSession
+    shouldEndSession: true
   }
 }
 
