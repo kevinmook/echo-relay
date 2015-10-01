@@ -26,7 +26,11 @@ exports.handler = function (event, context) {
       onIntent(event.request,
            event.session,
            function callback(sessionAttributes, speechletResponse) {
-             context.succeed(buildResponse(sessionAttributes, speechletResponse));
+              if(speechletResponse) {
+                context.succeed(buildResponse(sessionAttributes, speechletResponse));
+              } else {
+                context.succeed();
+              }
            });
     } else if (event.request.type === "SessionEndedRequest") {
       onSessionEnded(event.request, event.session);
@@ -68,17 +72,17 @@ function handleTypeIntent(intent, session, callback) {
 }
 
 function handleSkipIntent(intent, session, callback) {
-  var direction = intent.slots.SkipDirection;
+  var direction = intent.slots.SkipDirection.value;
   var command;
   if(direction == "ahead" || direction == "forward") {
     command = "skip_forward";
   } else if(direction == "back" || direction == "backward") {
     command = "skip_back";
   } else {
-    context.succeed();
+    callback();
     return;
   }
-  sendRokuCommand(command, parseInt(intent.slots.SkipAmount), intent, session, callback);
+  sendRokuCommand(command, parseInt(intent.slots.SkipAmount.value), intent, session, callback);
 }
 
 // --------------- Functions that control the skill's behavior -----------------------
