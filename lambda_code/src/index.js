@@ -94,7 +94,12 @@ function sendRokuCommand(commandName, arg, intent, session, callback) {
   var repromptText = null;
   var shouldEndSession = true;
 
-  request(SERVER_LOCATION + "?command=" + commandName, function (error, response, body) {
+  var argParam = "";
+  if(arg) {
+    argParam = "&arg="+arg;
+  }
+
+  request(SERVER_LOCATION + "?command=" + commandName + argParam, function (error, response, body) {
     callback(sessionAttributes, buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
   });
 }
