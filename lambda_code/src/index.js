@@ -33,7 +33,6 @@ exports.handler = function (event, context) {
               }
            });
     } else if (event.request.type === "SessionEndedRequest") {
-      onSessionEnded(event.request, event.session);
       context.succeed();
     }
   } catch (e) {
