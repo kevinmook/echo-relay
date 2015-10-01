@@ -41,12 +41,14 @@ function onIntent(intentRequest, session, callback) {
   console.log("onIntent requestId=" + intentRequest.requestId
         + ", sessionId=" + session.sessionId);
 
-  var intent = intentRequest.intent,
-    intentName = intentRequest.intent.name;
+  var intent = intentRequest.intent;
+  var intentName = intentRequest.intent.name;
 
   // Dispatch to your skill's intent handlers
   if (intentName === "play" || intentName === "pause" || intentName === "resume") {
-    sendRokuCommand(intentName, intent, session, callback);
+    sendRokuCommand("play", null, intent, session, callback);
+  } else if (intentName === "type") {
+    sendRokuCommand("type", intent.slots.text, intent, session, callback);
   } else {
     throw "Invalid intent";
   }
@@ -54,11 +56,11 @@ function onIntent(intentRequest, session, callback) {
 
 // --------------- Functions that control the skill's behavior -----------------------
 
-function sendRokuCommand(commandName, intent, session, callback) {
+function sendRokuCommand(commandName, arg, intent, session, callback) {
   var sessionAttributes = {};
 
   var cardTitle = commandName;
-  var speechOutput = commandName;
+  var speechOutput = null;
   var repromptText = null;
   var shouldEndSession = true;
 

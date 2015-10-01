@@ -1,0 +1,7 @@
+Pause pause
+
+Resume resume
+
+Play play
+
+Type type {text}

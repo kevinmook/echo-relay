@@ -5,7 +5,7 @@ var underscore = require('underscore');
 var app = express();
 
 function sendCommand(command, arg) {
-  if(command == "play" || command == "pause" || command == "resume") {
+  if(command == "play") {
     sendKeypress("Play");
   } else if(command == "reverse") {
     sendKeypress("Rev");
