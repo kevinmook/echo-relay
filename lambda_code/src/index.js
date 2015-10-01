@@ -78,7 +78,7 @@ function handleSkipIntent(intent, session, callback) {
   } else if(direction == "back" || direction == "backward") {
     command = "skip_back";
   } else {
-    callback();
+    callback({}, buildSpeechletResponse("Error", "Error. Unknown direction, "+direction, null, true));
     return;
   }
   sendRokuCommand(command, parseInt(intent.slots.SkipAmount.value), intent, session, callback);
