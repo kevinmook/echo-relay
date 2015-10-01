@@ -58,8 +58,8 @@ function skip(command, amount) {
     } else {
       command_list.push("Left");
     }
-    command_list.push("Select");
   });
+  command_list.push("Select");
 
   sendArray(command_list);
 }
