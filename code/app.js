@@ -40,7 +40,7 @@ function sendCommand(command, arg) {
       return "Lit_"+character;
     });
     sendArray(command_list);
-  } else if (command == "skip_ahead" || command == "skip_back") {
+  } else if (command == "skip_forward" || command == "skip_back") {
     skip(command, parseInt(arg));
   }
 }
@@ -49,11 +49,11 @@ function skip(command, amount) {
   if(amount < 1) {
     amount = 1;
   }
-  amount = Math.ceil(amount / 10) * 10;
+  amount = Math.ceil(amount / 10);
 
   command_list = [];
   underscore.times(amount, function(count) {
-    if(command == "skip_ahead") {
+    if(command == "skip_forward") {
       command_list.push("Right");
     } else {
       command_list.push("Left");
