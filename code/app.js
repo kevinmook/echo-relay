@@ -77,7 +77,7 @@ function sendArray(array) {
 }
 
 function sendKeypress(key, callback) {
-  request.post("http://192.168.0.101:8060/keypress/"+key, function (error, response, body) {
+  request.post("http://10.0.0.151:8060/keypress/"+key, function (error, response, body) {
     if(callback) {
       callback();
     }
